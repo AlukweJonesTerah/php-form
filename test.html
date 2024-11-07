@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            margin: auto;
+            padding: 20px;
+            width: 50%;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+        table {
+            width: 100%;
+        }
+        td {
+            padding: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+    function validateForm() {
+        var firstName = document.forms["studentForm"]["firstName"].value;
+        if (firstName == "") {
+            alert("Oops..!, You forgot to fill the First Name");
+            return false;
+        }
+
+        var lastName = document.forms["studentForm"]["lastName"].value;
+        if (lastName == "") {
+            alert("Oops..!, You forgot to fill the Last Name");
+            return false;
+        }
+
+        var regNo = document.forms["studentForm"]["regNumber"].value;
+        if (regNo.length < 8) {
+            alert("Oops..!, Your Registration Number should be at least 8 characters long");
+            return false;
+        }
+
+        var phone = document.forms["studentForm"]["phoneNumber"].value;
+        if (phone.length < 10) {
+            alert("Oops..!, Your Mobile Number should be at least 10 digits");
+            return false;
+        }
+
+        var email = document.forms["studentForm"]["emailAddress"].value;
+        var at = email.indexOf("@");
+        var dot = email.lastIndexOf(".");
+        if (at < 1 || dot < at + 2 || dot + 2 >= email.length) {
+            alert("Not a valid e-mail address");
+            return false;
+        }
+
+        var hostelOption = document.forms["studentForm"]["hostelStatus"].value;
+        if (hostelOption == "") {
+            alert("Oops..!, Please select if you are a Day Scholar or in Hostel");
+            return false;
+        }
+
+        var address = document.forms["studentForm"]["studentAddress"].value;
+        if (address == "") {
+            alert("Oops..!, You forgot to fill the Address");
+            return false;
+        }
+
+        return true;
+    }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Student Enrollment Form</h2>
+        <!-- Ensure that the form action is pointing to your PHP file -->
+        <form name="studentForm" action="FSREG.php" onsubmit="return validateForm()" method="post">
+            <table>
+                <tr>
+                    <td><b>First Name:</b></td>
+                    <td><input type="text" name="firstName"></td>
+                </tr>
+                <tr>
+                    <td><b>Last Name:</b></td>
+                    <td><input type="text" name="lastName"></td>
+                </tr>
+                <tr>
+                    <td><b>Gender:</b></td>
+                    <td>
+                        <input type="radio" name="gender" value="male" checked> Male &nbsp;
+                    </td>
+                    <td>
+                        <input type="radio" name="gender" value="female"> Female
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Registration No:</b></td>
+                    <td><input type="text" name="regNumber"></td>
+                </tr>
+                <tr>
+                    <td><b>Phone Number:</b></td>
+                    <td><input type="tel" name="phoneNumber"></td>
+                </tr>
+                <tr>
+                    <td><b>Email Address:</b></td>
+                    <td><input type="email" name="emailAddress"></td>
+                </tr>
+                <tr>
+                    <td><b>Hostel Status:</b></td>
+                    <td>
+                        <select name="hostelStatus">
+                            <option value="">--Select--</option>
+                            <option value="DayScholar">Day Scholar</option>
+                            <option value="Hostel">Hostel</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Address:</b></td>
+                    <td><textarea name="studentAddress" rows="4" cols="25"></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="center"><input type="submit" value="SUBMIT"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+
+<?php
+// Retrieve form data using POST method
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$gender = $_POST['gender'];
+$regNumber = $_POST['regNumber'];
+$phoneNumber = $_POST['phoneNumber'];
+$emailAddress = $_POST['emailAddress'];
+$hostelStatus = $_POST['hostelStatus'];
+$studentAddress = $_POST['studentAddress'];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Confirmation</title>
+</head>
+<body style="background-color: #f0f8ff;">
+    <h2 align="center">Student Registration Confirmation</h2>
+    <table align="center">
+        <tr><td><b>First Name:</b></td><td><?php echo htmlspecialchars($firstName); ?></td></tr>
+        <tr><td><b>Last Name:</b></td><td><?php echo htmlspecialchars($lastName); ?></td></tr>
+        <tr><td><b>Gender:</b></td><td><?php echo htmlspecialchars($gender); ?></td></tr>
+        <tr><td><b>Registration No:</b></td><td><?php echo htmlspecialchars($regNumber); ?></td></tr>
+        <tr><td><b>Phone Number:</b></td><td><?php echo htmlspecialchars($phoneNumber); ?></td></tr>
+        <tr><td><b>Email Address:</b></td><td><?php echo htmlspecialchars($emailAddress); ?></td></tr>
+        <tr><td><b>Hostel Status:</b></td><td><?php echo htmlspecialchars($hostelStatus); ?></td></tr>
+        <tr><td><b>Address:</b></td><td><?php echo htmlspecialchars($studentAddress); ?></td></tr>
+    </table>
+    <p align="center"><a href="form.html">Go back to form</a></p>
+</body>
+</html>
